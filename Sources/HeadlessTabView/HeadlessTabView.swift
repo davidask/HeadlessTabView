@@ -15,7 +15,7 @@ where Selection: Hashable & CaseIterable, Content: View {
 
     public var body: some View {
         GeometryReader { proxy in
-            Inner($state, proxy: proxy, content: content).ignoresSafeArea(.all, edges: .all)
+            Inner($state, proxy: proxy, content: content).edgesIgnoringSafeArea(.all)
         }
     }
 }
