@@ -1,12 +1,14 @@
 import SwiftUI
 
-public struct HeadlessTabView<Selection, Content>: View where Selection: Hashable & CaseIterable, Content: View {
+public struct HeadlessTabView<Selection, Content>: View
+where Selection: Hashable & CaseIterable, Content: View {
 
     @Binding var state: Selection
 
     private let content: (Selection) -> Content
 
-    public init(_ state: Binding<Selection>, @ViewBuilder content: @escaping (Selection) -> Content) {
+    public init(_ state: Binding<Selection>, @ViewBuilder content: @escaping (Selection) -> Content)
+    {
         self._state = state
         self.content = content
     }

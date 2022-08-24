@@ -5,8 +5,8 @@ import PackageDescription
 let package = Package(
     name: "HeadlessTabView",
     platforms: [
-        .iOS(.v14),
-        .tvOS(.v14),
+        .iOS(.v13),
+        .tvOS(.v13),
     ],
     products: [
         .library(
