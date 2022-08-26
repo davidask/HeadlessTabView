@@ -7,17 +7,17 @@ Minimal SwiftUI library providing a simple `TabView` alternative without the com
 This project was sprung from the need for a `View` capable of the following:
 
 1. Preserve internal state of conditional views to enable "multitasking" within applications
-2. Cleanly detach conditional views from the view hierarchy, and properly invoke life cycle events
+2. Cleanly detach conditional views from the view hierarchy, and properly appearance life cycle events
 3. Allow for a custom (or hidden) method of switching tabs
 
 Surprisingly, no apparent existing fits:
 
-| Solution                        | Persists state | Life cycle events | No extras |
-| ------------------------------- | -------------- | ----------------- | --------- |
-| `TabView`                       | ✅             | ✅                | ❌        |
-| Conditional rendering           | ❌             | ✅                | ✅        |
-| `ZStack` + `.opacity` modifiers | ✅             | ❌                | ✅        |
-| `HeadlessTabView`               | ✅             | ✅                | ✅        |
+| Solution                        | Persists state | Appearance cycle events | No extras |
+| ------------------------------- | -------------- | ----------------------- | --------- |
+| `TabView`                       | ✅             | ✅                      | ❌        |
+| Conditional rendering           | ❌             | ✅                      | ✅        |
+| `ZStack` + `.opacity` modifiers | ✅             | ❌                      | ✅        |
+| `HeadlessTabView`               | ✅             | ✅                      | ✅        |
 
 ## Requirements
 
