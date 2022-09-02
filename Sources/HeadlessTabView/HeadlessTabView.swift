@@ -1,39 +1,39 @@
 import SwiftUI
 
-public struct HeadlessTabView<Selection, Content>: View
-where Selection: Hashable & CaseIterable, Content: View {
+public struct HeadlessTabView<Tab, Content>: View
+where Tab: Hashable & CaseIterable, Content: View {
 
-    @Binding var state: Selection
+    @Binding var selection: Tab
 
-    private let content: (Selection) -> Content
+    private let content: (Tab) -> Content
 
-    public init(_ state: Binding<Selection>, @ViewBuilder content: @escaping (Selection) -> Content)
+    public init(_ selection: Binding<Tab>, @ViewBuilder content: @escaping (Tab) -> Content)
     {
-        self._state = state
+        self._selection = selection
         self.content = content
     }
 
     public var body: some View {
         GeometryReader { proxy in
-            Inner($state, proxy: proxy, content: content).edgesIgnoringSafeArea(.all)
+            Inner($selection, proxy: proxy, content: content).edgesIgnoringSafeArea(.all)
         }
     }
 }
 
 extension HeadlessTabView {
     fileprivate struct Inner {
-        @Binding var state: Selection
+        @Binding var selection: Tab
 
-        private let content: (Selection) -> Content
+        private let content: (Tab) -> Content
 
         var proxy: GeometryProxy
 
         public init(
-            _ state: Binding<Selection>,
+            _ selection: Binding<Tab>,
             proxy: GeometryProxy,
-            content: @escaping (Selection) -> Content
+            content: @escaping (Tab) -> Content
         ) {
-            self._state = state
+            self._selection = selection
             self.content = content
             self.proxy = proxy
         }
@@ -48,17 +48,25 @@ extension HeadlessTabView.Inner: UIViewControllerRepresentable {
 
     func updateUIViewController(_ uiViewController: HeadlessTabView.Controller, context: Context) {
 
+        guard context.coordinator.currentSelection != selection else {
+            return
+        }
+
+        defer {
+            context.coordinator.currentSelection = selection
+        }
+
         let viewController: UIViewController
 
-        if let existing = context.coordinator.storedViewControllers[state] {
+        if let existing = context.coordinator.storedViewControllers[selection] {
             viewController = existing
         }
         else {
             viewController = UIHostingController(
-                rootView: content(state)
+                rootView: content(selection).id(selection)
             )
 
-            context.coordinator.storedViewControllers[state] = viewController
+            context.coordinator.storedViewControllers[selection] = viewController
         }
 
         uiViewController.passedEdgeInsets = UIEdgeInsets(
@@ -217,6 +225,7 @@ extension HeadlessTabView {
 
 extension HeadlessTabView {
     fileprivate class Coordinator {
-        var storedViewControllers: [Selection: UIViewController] = [:]
+        var storedViewControllers: [Tab: UIViewController] = [:]
+        var currentSelection: Tab?
     }
 }

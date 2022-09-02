@@ -24,6 +24,7 @@ struct ContentView: View {
                                 }
                                 .padding()
                                 .navigationTitle("Blue")
+
                             case .green:
 
                                 VStack(alignment: .leading) {
